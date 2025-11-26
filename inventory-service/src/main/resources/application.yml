@@ -11,15 +11,19 @@ spring:
       path: /h2-console
 
   datasource:
-    url: jdbc:h2:mem:inventory_service
+    url: jdbc:h2:mem:inventorydb;DB_CLOSE_DELAY=-1
     driver-class-name: org.h2.Driver
     username: sa
-    password: ""
+    password:
 
   jpa:
-    show-sql: true
     hibernate:
       ddl-auto: update
+    defer-datasource-initialization: true
+
+  sql:
+    init:
+      mode: always
 
 springdoc:
   show-actuator: true
