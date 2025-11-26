@@ -1,0 +1,49 @@
+version: "3.9"
+
+services:
+  discovery-server:
+    build:
+      context: ./discovery-server
+    container_name: discovery-server
+    ports:
+      - "8761:8761"
+    environment:
+      - SPRING_PROFILES_ACTIVE=docker
+    networks:
+      - micro-net
+
+  inventory-service:
+    build:
+      context: ./inventory-service
+    container_name: inventory-service
+    depends_on:
+      - discovery-server
+    ports:
+      - "8071:8071"
+    environment:
+      - SPRING_PROFILES_ACTIVE=docker
+      - SPRING_EUREKA_CLIENT_SERVICEURL_DEFAULTZONE=http://discovery-server:8761/eureka
+      - SPRING_APPLICATION_NAME=inventory-service
+    networks:
+      - micro-net
+
+  order-service:
+    build:
+      context: ./order-service
+    container_name: order-service
+    depends_on:
+      - discovery-server
+      - inventory-service
+    ports:
+      - "8072:8072"
+    environment:
+      - SPRING_PROFILES_ACTIVE=docker
+      - SPRING_EUREKA_CLIENT_SERVICEURL_DEFAULTZONE=http://discovery-server:8761/eureka
+      - SPRING_APPLICATION_NAME=order-service
+      - INVENTORY_SERVICE_URL=http://inventory-service:8071
+    networks:
+      - micro-net
+
+networks:
+  micro-net:
+    driver: bridge
