@@ -10,6 +10,6 @@ import java.util.List;
 
 @Repository
 public interface InventoryBatchRepository extends JpaRepository<InventoryBatch, Long> {
-    @Query("select b from InventoryBatch b where b.product.id = :productId order by b.expiryDate asc")
+    @Query("select b from InventoryBatch b where b.product.id = :productId and b.quantity > 0 order by b.expiryDate asc")
     List<InventoryBatch> findByProductIdOrderByExpiryDateAsc(@Param("productId") Long productId);
 }
