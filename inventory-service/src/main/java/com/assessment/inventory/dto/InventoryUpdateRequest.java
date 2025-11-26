@@ -9,6 +9,7 @@ import java.util.Map;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
+@Data
 public class InventoryUpdateRequest {
     private Long productId;
     /**
