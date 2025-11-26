@@ -186,7 +186,7 @@ cd order-service
 mvn test
 ```
 ```bash
-cd ../inventory-service
+cd /inventory-service
 mvn test
 ```
 
